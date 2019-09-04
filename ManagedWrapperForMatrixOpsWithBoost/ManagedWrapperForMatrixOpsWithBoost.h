@@ -21,4 +21,5 @@ namespace ManagedWrapperForMatrixOpsWithBoost {
 	private:
 		NativeMatrixManager* nativeMatrixManager;
 	};
+	void printMatrix(MatrixPtr& matrixAPtr);
 }
