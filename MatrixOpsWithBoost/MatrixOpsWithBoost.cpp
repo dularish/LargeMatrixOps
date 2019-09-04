@@ -32,5 +32,6 @@ void TryCreatingLargeMatrix(int someLargeSize)
 void TryInstantiationWithManager(int someLargeSize)
 {
 	NativeMatrixManager matrixMgr;
-	matrixMgr.InstantiateMatrix("A", someLargeSize, someLargeSize);
+	char matrixName[] = "A";
+	matrixMgr.InstantiateMatrix(matrixName, someLargeSize, someLargeSize);
 }

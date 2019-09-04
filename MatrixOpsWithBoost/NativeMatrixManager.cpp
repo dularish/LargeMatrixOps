@@ -1,8 +1,8 @@
 #include "NativeMatrixManager.h"
 #include <Windows.h>
 
-
-bool NativeMatrixManager::InstantiateMatrix(std::string matrixLabel, int rows, int columns)
+/*char* matrixLabel,*/
+bool NativeMatrixManager::InstantiateMatrix(string matrixLabel, int rows, int columns)
 {
 	// TODO: Add your implementation code here.
 	if (MatricesMap.find(matrixLabel) != MatricesMap.end()) {
@@ -27,6 +27,8 @@ bool NativeMatrixManager::InstantiateMatrix(std::string matrixLabel, int rows, i
 			return false;
 		}
 	}
+
+	return true;
 }
 
 //Function to check if matrix creation is possible
