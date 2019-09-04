@@ -154,6 +154,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="MatrixOpsWithBoost.cpp" />
+    <ClCompile Include="NativeMatrixManager.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MatrixOpsWithBoost.h" />
+    <ClInclude Include="NativeMatrixManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
