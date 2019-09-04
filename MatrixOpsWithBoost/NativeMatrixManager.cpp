@@ -4,7 +4,6 @@
 /*char* matrixLabel,*/
 bool NativeMatrixManager::InstantiateMatrix(string matrixLabel, int rows, int columns)
 {
-	// TODO: Add your implementation code here.
 	if (MatricesMap.find(matrixLabel) != MatricesMap.end()) {
 		cout << "Matrix "<<matrixLabel<<" already exists" << endl;
 		return false;
@@ -47,5 +46,23 @@ bool NativeMatrixManager::matrixCreationPossible(int rows, int columns, unsigned
 	}
 	else {
 		return false;
+	}
+}
+
+
+// Sets the data for the matrix if the matrix exists
+bool NativeMatrixManager::SetDataForRow(string matrixLabel, double row, double* rowData)
+{
+	if (MatricesMap.find(matrixLabel) == MatricesMap.end()) {
+		cout << "Matrix " << matrixLabel << " does not exists" << endl;
+		return false;
+	}
+	else {
+		for (size_t i = 0; i < rowData[i] != NULL; i++)
+		{
+			MatrixPtr matrixPtr = MatricesMap[matrixLabel];
+			matrixPtr->at_element(row, i) = rowData[i];
+		}
+		return true;
 	}
 }

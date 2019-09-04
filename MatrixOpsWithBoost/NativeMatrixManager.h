@@ -17,5 +17,7 @@ public:
 	bool InstantiateMatrix(string matrixLabel, int rows, int columns);
 	bool matrixCreationPossible(int rows, int columns, unsigned long long dataTypeSize);
 	MatrixDict MatricesMap;
+	// Sets the data for the matrix if the matrix exists
+	bool SetDataForRow(string matrixLabel, double row, double* rowData);
 };
 
