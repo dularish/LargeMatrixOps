@@ -20,6 +20,18 @@ bool ManagedWrapperForMatrixOpsWithBoost::ManagedMatrixManager::InstantiateMatri
 	return nativeMatrixManager->InstantiateMatrix(unmanagedString, rows, cols);
 }
 
+bool ManagedWrapperForMatrixOpsWithBoost::ManagedMatrixManager::DeleteMatrix(String^ matrixName)
+{
+	if (nativeMatrixManager) {
+		char* unmanagedString = static_cast<char*>(Marshal::StringToHGlobalAnsi(matrixName).ToPointer());
+		return nativeMatrixManager->DeleteMatrix(unmanagedString);
+	}
+	else {
+		return false;
+	}
+	
+}
+
 void ManagedWrapperForMatrixOpsWithBoost::ManagedMatrixManager::SetDataForRow(String^ matrixName, double row, List<double>^ rowData)
 {
 	if (nativeMatrixManager) {

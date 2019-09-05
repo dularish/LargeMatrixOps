@@ -66,3 +66,25 @@ bool NativeMatrixManager::SetDataForRow(string matrixLabel, double row, double* 
 		return true;
 	}
 }
+
+
+// Deletes the matrix from memory if available
+bool NativeMatrixManager::DeleteMatrix(string matrixLabel)
+{
+	if (MatricesMap.find(matrixLabel) == MatricesMap.end()) {
+		cout << "Matrix " << matrixLabel << " does not exists" << endl;
+		return false;
+	}
+	else {
+		try
+		{
+			MatricesMap.erase(matrixLabel);
+			return true;
+		}
+		catch (const std::exception& ex)
+		{
+			cout << "Exception during matrix deletion : " << ex.what() << endl;
+			return false;
+		}
+	}
+}

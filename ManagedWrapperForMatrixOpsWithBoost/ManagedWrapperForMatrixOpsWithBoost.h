@@ -13,6 +13,7 @@ namespace ManagedWrapperForMatrixOpsWithBoost {
 		ManagedMatrixManager();
 		~ManagedMatrixManager();
 		bool InstantiateMatrix(String^ matrixName, double rows, double cols);
+		bool DeleteMatrix(String^ matrixName);
 		void SetDataForRow(String^ matrixName, double row, List<System::Double>^ rowData);
 		void SetDataForCol(String^ matrixName, double col, List<System::Double>^ colData);
 		List<double>^ GetDataForRow(String^ matrixName, double row);

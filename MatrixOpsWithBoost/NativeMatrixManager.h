@@ -19,5 +19,7 @@ public:
 	MatrixDict MatricesMap;
 	// Sets the data for the matrix if the matrix exists
 	bool SetDataForRow(string matrixLabel, double row, double* rowData);
+	// Deletes the matrix from memory if available
+	bool DeleteMatrix(string matrixLabel);
 };
 
