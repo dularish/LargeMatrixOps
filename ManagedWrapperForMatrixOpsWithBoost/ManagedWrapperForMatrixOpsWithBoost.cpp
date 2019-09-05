@@ -160,29 +160,23 @@ void ManagedWrapperForMatrixOpsWithBoost::ManagedMatrixManager::MatrixMultiply(S
 		else if (matrixDict.find(matrixNameBUnmanaged) == matrixDict.end()) {
 			throw gcnew Exception(" Matrix " + matrixB + " not found");
 		}
-		/*else if (matrixDict.find(matrixNameABUnmanaged) != matrixDict.end()) {
+		else if (matrixDict.find(matrixNameABUnmanaged) != matrixDict.end()) {
 			throw gcnew Exception(" Matrix " + labelForMatrixAB + " already exists. It needs to be cleared for matrix multiplication to work");
-		}*/
+		}
 		else {
 			MatrixPtr matrixAPtr = matrixDict[matrixNameAUnmanaged];
 			MatrixPtr matrixBPtr = matrixDict[matrixNameBUnmanaged];
 
 			if (matrixAPtr->size2() == matrixBPtr->size1()) {
-				
-				MatrixPtr matrixABPtr = matrixDict[matrixNameABUnmanaged];
-				(*matrixABPtr) = prod(*matrixAPtr, *matrixBPtr);
-
-				/*
-				//This block doesn't work - To check why
-				bool returnType = InstantiateMatrix(labelForMatrixAB + "_local", 2, 2);
-				char* matrixNameLocallyInstantiated = static_cast<char*>(Marshal::StringToHGlobalAnsi(labelForMatrixAB + "_local").ToPointer());
-				MatrixPtr matrixLocallyInst = matrixDict[matrixNameLocallyInstantiated];
-
-				cout << matrixAPtr << endl;
-				cout << matrixBPtr << endl;
-				cout << matrixABPtr << endl;
-				cout << matrixLocallyInst << endl;
-				printMatrix(matrixLocallyInst);*/
+				bool matrixInstantiationSuccess = InstantiateMatrix(labelForMatrixAB, matrixAPtr->size1(), matrixBPtr->size1());
+				if (matrixInstantiationSuccess) {
+					matrixDict = nativeMatrixManager->MatricesMap;//This is necessary because after instantiating matrix the Map data structure gets additional entry because of which reallocation of the data structure memory takes place
+					MatrixPtr matrixABPtr = matrixDict[matrixNameABUnmanaged];
+					(*matrixABPtr) = prod(*matrixAPtr, *matrixBPtr);
+				}
+				else {
+					throw gcnew Exception("Resultant matrix for multiplication could not be instantiated");
+				}
 				
 			}
 			else {

@@ -33,7 +33,6 @@ namespace ConsoleAppForTesting
                 managedMatrixManager.SetDataForCol(matrixE, 1, new List<double>() { 1, 2, 7 });
                 //Correct answer : -62 24 \n -52 56
                 string matrixBE = "matrixBE";
-                bool return8 = managedMatrixManager.InstantiateMatrix(matrixBE, 2, 2);
                 managedMatrixManager.MatrixMultiply(matrixB, matrixE, matrixBE);
                 for (int i = 0; i < 2; i++)
                 {
