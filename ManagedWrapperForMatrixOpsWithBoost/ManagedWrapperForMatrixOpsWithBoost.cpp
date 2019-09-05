@@ -128,6 +128,54 @@ List<double>^ ManagedWrapperForMatrixOpsWithBoost::ManagedMatrixManager::GetData
 	}
 }
 
+double ManagedWrapperForMatrixOpsWithBoost::ManagedMatrixManager::GetDataAt(String^ matrixName, double rowIndex, double colIndex)
+{
+	if (nativeMatrixManager) {
+		MatrixDict matrixDict = nativeMatrixManager->MatricesMap;
+		char* matrixNameUnmanaged = static_cast<char*>(Marshal::StringToHGlobalAnsi(matrixName).ToPointer());
+
+		if (matrixDict.find(matrixNameUnmanaged) == matrixDict.end()) {
+			throw gcnew Exception(" Matrix " + matrixName + " not found");
+		}
+		else {
+			MatrixPtr matrixPtr = matrixDict[matrixNameUnmanaged];
+			if (rowIndex >= 0 && colIndex >= 0 && (rowIndex < matrixPtr->size1()) && (colIndex < matrixPtr->size2())) {
+				return (matrixPtr->at_element(rowIndex, colIndex));
+			}
+			else {
+				throw gcnew Exception("Incorrect indices input to get : (" + rowIndex.ToString() + " , " + colIndex.ToString() + " )");
+			}
+		}
+	}
+	else {
+		throw gcnew Exception("Native matrix manager does not exist");
+	}
+}
+
+void ManagedWrapperForMatrixOpsWithBoost::ManagedMatrixManager::SetDataAt(String^ matrixName, double rowIndex, double colIndex, double dataToSet)
+{
+	if (nativeMatrixManager) {
+		MatrixDict matrixDict = nativeMatrixManager->MatricesMap;
+		char* matrixNameUnmanaged = static_cast<char*>(Marshal::StringToHGlobalAnsi(matrixName).ToPointer());
+
+		if (matrixDict.find(matrixNameUnmanaged) == matrixDict.end()) {
+			throw gcnew Exception(" Matrix " + matrixName + " not found");
+		}
+		else {
+			MatrixPtr matrixPtr = matrixDict[matrixNameUnmanaged];
+			if (rowIndex >= 0 && colIndex >= 0 && (rowIndex < matrixPtr->size1()) && (colIndex < matrixPtr->size2())) {
+				matrixPtr->at_element(rowIndex, colIndex) = dataToSet;
+			}
+			else {
+				throw gcnew Exception("Incorrect indices input to set : (" + rowIndex.ToString() + " , " + colIndex.ToString() + " )");
+			}
+		}
+	}
+	else {
+		throw gcnew Exception("Native matrix manager does not exist");
+	}
+}
+
 List<double>^ ManagedWrapperForMatrixOpsWithBoost::ManagedMatrixManager::GetDataForCol(String^ matrixName, double col)
 {
 	if (nativeMatrixManager) {
