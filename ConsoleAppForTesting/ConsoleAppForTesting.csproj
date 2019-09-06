@@ -53,6 +53,7 @@
     <ProjectReference Include="..\ManagedWrapperForMatrixOpsWithBoost\ManagedWrapperForMatrixOpsWithBoost.vcxproj">
       <Project>{8246959b-4b12-440a-be0c-93a63a68f746}</Project>
       <Name>ManagedWrapperForMatrixOpsWithBoost</Name>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

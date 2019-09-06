@@ -1,5 +1,6 @@
 #pragma once
 #include "../MatrixOpsWithBoost/NativeMatrixManager.h"
+#include "ManagedMatrixPtr.h"
 //#include <msclr/marshal_cppstd.h>
 
 using namespace System;
@@ -12,17 +13,18 @@ namespace ManagedWrapperForMatrixOpsWithBoost {
 	public:
 		ManagedMatrixManager();
 		~ManagedMatrixManager();
-		bool InstantiateMatrix(String^ matrixName, double rows, double cols);
+		ManagedMatrixPtr^ InstantiateMatrix(String^ matrixName, double rows, double cols);
 		bool DeleteMatrix(String^ matrixName);
 		void SetDataForRow(String^ matrixName, double row, List<System::Double>^ rowData);
 		void SetDataForCol(String^ matrixName, double col, List<System::Double>^ colData);
 		List<double>^ GetDataForRow(String^ matrixName, double row);
 		double GetDataAt(String^ matrixName, double rowIndex, double colIndex);
-		double SetDataAt(String^ matrixName, double rowIndex, double colIndex, double dataToSet);
+		void SetDataAt(String^ matrixName, double rowIndex, double colIndex, double dataToSet);
 		List<double>^ GetDataForCol(String^ matrixName, double col);
 		void MatrixMultiply(String^ matrixA, String^ matrixB, String^ labelForMatrixAB);
 	private:
 		NativeMatrixManager* nativeMatrixManager;
 	};
 	void printMatrix(MatrixPtr& matrixAPtr);
+
 }

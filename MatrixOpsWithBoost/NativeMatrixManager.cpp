@@ -2,36 +2,32 @@
 #include <Windows.h>
 
 /*char* matrixLabel,*/
-bool NativeMatrixManager::InstantiateMatrix(string matrixLabel, int rows, int columns)
+MatrixPtr NativeMatrixManager::InstantiateMatrix(string matrixLabel, int rows, int columns)
 {
 	if (MatricesMap.find(matrixLabel) != MatricesMap.end()) {
-		cout << "Matrix "<<matrixLabel<<" already exists" << endl;
-		return false;
+		throw ("Matrix " + matrixLabel + " already exists");
 	}
 	else {
 		try
 		{
 			if (matrixCreationPossible(rows, columns, sizeof(double))) {
 				MatricesMap[matrixLabel] = std::make_shared<matrix<double>>(rows, columns);
-				return true;
+				return MatricesMap[matrixLabel];
 			}
 			else {
-				cout << "Not enough memory available to instantiate the matrix " << matrixLabel << endl;
-				return false;
+				throw ("Not enough memory available to instantiate the matrix " + matrixLabel);
 			}
 		}
 		catch (const std::exception& ex)
 		{
-			cout << "Exception during matrix creation : " << ex.what() << endl;
-			return false;
+			string exceptionMessage = ex.what();
+			throw ("Exception during matrix creation : " + (exceptionMessage));
 		}
 	}
-
-	return true;
 }
 
 //Function to check if matrix creation is possible
-bool NativeMatrixManager::matrixCreationPossible(int rows, int columns, unsigned long long dataTypeSize)
+bool matrixCreationPossible(int rows, int columns, unsigned long long dataTypeSize)
 {
 	MEMORYSTATUSEX statex;
 	statex.dwLength = sizeof(statex);

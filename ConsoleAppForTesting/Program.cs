@@ -19,17 +19,20 @@ namespace ConsoleAppForTesting
                 //bool return2 = managedMatrixManager.InstantiateMatrix("matrixA", 60000, 60000);
                 //bool return3 = managedMatrixManager.InstantiateMatrix("matrixB", 60000, 20000);
                 //bool return4 = managedMatrixManager.InstantiateMatrix("matrixC", 90000, 90000);
-                bool return5 = managedMatrixManager.InstantiateMatrix("matrixA", 3, 3);
+
+                tryInstantiatingAMatrixLocally(managedMatrixManager);
+
+                var return5 = managedMatrixManager.InstantiateMatrix("matrixA", 3, 3);
                 managedMatrixManager.SetDataForRow("matrixA", 0, new List<double>() { 1, 2, 3 });
                 var return52 = managedMatrixManager.GetDataForRow("matrixA", 0);
 
                 string matrixB = "matrixB";
-                bool return6 = managedMatrixManager.InstantiateMatrix(matrixB, 2, 3);
+                var return6 = managedMatrixManager.InstantiateMatrix(matrixB, 2, 3);
                 managedMatrixManager.SetDataForRow(matrixB, 0, new List<double>() { 8,1,2});
                 managedMatrixManager.SetDataForRow(matrixB, 1, new List<double>() { -5, 6, 7 });
 
                 string matrixE = "matrixE";
-                bool return7 = managedMatrixManager.InstantiateMatrix(matrixE, 3, 2);
+                var return7 = managedMatrixManager.InstantiateMatrix(matrixE, 3, 2);
                 managedMatrixManager.SetDataForCol(matrixE, 0, new List<double>() { -5, 0, -11 });
                 managedMatrixManager.SetDataForCol(matrixE, 1, new List<double>() { 1, 2, 7 });
                 //Correct answer : -62 24 \n -52 56
@@ -48,6 +51,28 @@ namespace ConsoleAppForTesting
             catch (Exception ex)
             {
                 Console.WriteLine("Exception caught : \nException Message :\n" + ex.Message + "\nException StackTrace : " + ex.StackTrace);
+            }
+        }
+
+        private static void tryInstantiatingAMatrixLocally(ManagedMatrixManager managedMatrixManager)
+        {
+            string matrixName = "someMatrix";
+            ManagedMatrixPtr managedMatrixPtr = managedMatrixManager.InstantiateMatrix(matrixName, 20000, 20000);
+            ManagedMatrixPtr anotherManagedMatrixPtr = managedMatrixManager.InstantiateMatrix(matrixName + "a", 40000, 40000);
+            using (managedMatrixPtr)
+            using (anotherManagedMatrixPtr)
+            {
+                string a = "";
+            }
+
+            using(ManagedMatrixPtr managedMatrix = new ManagedMatrixPtr(60000, 60000))
+            {
+                int a = 1;
+            }
+
+            using (ManagedMatrixPtr managedMatrix = new ManagedMatrixPtr(90000, 90000))
+            {
+                int a = 1;
             }
         }
     }

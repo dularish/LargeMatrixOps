@@ -14,12 +14,11 @@ class NativeMatrixManager
 {
 public:
 	/*char* matrixLabel,*/
-	bool InstantiateMatrix(string matrixLabel, int rows, int columns);
-	bool matrixCreationPossible(int rows, int columns, unsigned long long dataTypeSize);
+	MatrixPtr InstantiateMatrix(string matrixLabel, int rows, int columns);
 	MatrixDict MatricesMap;
 	// Sets the data for the matrix if the matrix exists
 	bool SetDataForRow(string matrixLabel, double row, double* rowData);
 	// Deletes the matrix from memory if available
 	bool DeleteMatrix(string matrixLabel);
 };
-
+bool matrixCreationPossible(int rows, int columns, unsigned long long dataTypeSize);

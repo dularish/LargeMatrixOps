@@ -14,10 +14,23 @@ ManagedWrapperForMatrixOpsWithBoost::ManagedMatrixManager::~ManagedMatrixManager
 	delete nativeMatrixManager;
 }
 
-bool ManagedWrapperForMatrixOpsWithBoost::ManagedMatrixManager::InstantiateMatrix(String^ matrixName, double rows, double cols)
+ManagedMatrixPtr^ ManagedWrapperForMatrixOpsWithBoost::ManagedMatrixManager::InstantiateMatrix(String^ matrixName, double rows, double cols)
 {
 	char* unmanagedString = static_cast<char*>(Marshal::StringToHGlobalAnsi(matrixName).ToPointer());
-	return nativeMatrixManager->InstantiateMatrix(unmanagedString, rows, cols);
+	try
+	{
+		MatrixPtr& matrixPtr = nativeMatrixManager->InstantiateMatrix(unmanagedString, rows, cols);
+		return gcnew ManagedMatrixPtr(matrixName, matrixPtr, nativeMatrixManager);
+	}
+	catch (std::exception& ex)
+	{
+		std::string exceptionMessage = ex.what();
+		throw gcnew Exception(gcnew String(ex.what()));
+	}
+	catch(std::string const& exMessage)
+	{
+		throw gcnew Exception(gcnew String(exMessage.c_str()));
+	}
 }
 
 bool ManagedWrapperForMatrixOpsWithBoost::ManagedMatrixManager::DeleteMatrix(String^ matrixName)
@@ -228,7 +241,7 @@ void ManagedWrapperForMatrixOpsWithBoost::ManagedMatrixManager::MatrixMultiply(S
 			MatrixPtr matrixBPtr = matrixDict[matrixNameBUnmanaged];
 
 			if (matrixAPtr->size2() == matrixBPtr->size1()) {
-				bool matrixInstantiationSuccess = InstantiateMatrix(labelForMatrixAB, matrixAPtr->size1(), matrixBPtr->size1());
+				ManagedMatrixPtr^ matrixInstantiationSuccess = InstantiateMatrix(labelForMatrixAB, matrixAPtr->size1(), matrixBPtr->size1());
 				if (matrixInstantiationSuccess) {
 					matrixDict = nativeMatrixManager->MatricesMap;//This is necessary because after instantiating matrix the Map data structure gets additional entry because of which reallocation of the data structure memory takes place
 					MatrixPtr matrixABPtr = matrixDict[matrixNameABUnmanaged];
