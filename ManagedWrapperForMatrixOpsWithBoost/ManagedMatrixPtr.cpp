@@ -8,6 +8,13 @@ ManagedMatrixPtr::ManagedMatrixPtr(System::String^ matrixName, MatrixPtr matrixP
 	this->nativeMatrixManager = nativeMatrixManager;
 }
 
+ManagedMatrixPtr::ManagedMatrixPtr(matrix<double>* matrix)
+{
+	pointerToNativeMatrixPtr = new MatrixPtr(matrix);
+	nativeMatrixManager = NULL;
+	MatrixName = "Unnamed";
+}
+
 ManagedMatrixPtr::ManagedMatrixPtr(double rows, double columns)
 {
 	if (matrixCreationPossible(rows, columns, sizeof(double))) {
@@ -55,4 +62,11 @@ double ManagedMatrixPtr::ColumnCount()
 	else {
 		throw gcnew System::Exception("Tried to access disposed object");
 	}
+}
+
+ManagedMatrixPtr^ ManagedMatrixPtr::product(ManagedMatrixPtr^ lhs, ManagedMatrixPtr^ rhs)
+{
+	matrix<double> mulMatrix = prod(*(*(lhs->pointerToNativeMatrixPtr)), (*(*(rhs->pointerToNativeMatrixPtr))));
+	matrix<double>* heapMatrix = new matrix<double>(mulMatrix);
+	return gcnew ManagedMatrixPtr(heapMatrix);
 }

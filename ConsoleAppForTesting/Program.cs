@@ -20,7 +20,7 @@ namespace ConsoleAppForTesting
                 //bool return3 = managedMatrixManager.InstantiateMatrix("matrixB", 60000, 20000);
                 //bool return4 = managedMatrixManager.InstantiateMatrix("matrixC", 90000, 90000);
 
-                tryInstantiatingAMatrixLocally(managedMatrixManager);
+                //tryInstantiatingAMatrixLocally(managedMatrixManager);
 
                 var return5 = managedMatrixManager.InstantiateMatrix("matrixA", 3, 3);
                 managedMatrixManager.SetDataForRow("matrixA", 0, new List<double>() { 1, 2, 3 });
@@ -37,6 +37,7 @@ namespace ConsoleAppForTesting
                 managedMatrixManager.SetDataForCol(matrixE, 1, new List<double>() { 1, 2, 7 });
                 //Correct answer : -62 24 \n -52 56
                 string matrixBE = "matrixBE";
+                var multipliedMatrix = ManagedMatrixPtr.product(new ManagedMatrixPtr(1000,10000), new ManagedMatrixPtr(1000, 1000));
                 managedMatrixManager.MatrixMultiply(matrixB, matrixE, matrixBE);
                 for (int i = 0; i < 2; i++)
                 {
