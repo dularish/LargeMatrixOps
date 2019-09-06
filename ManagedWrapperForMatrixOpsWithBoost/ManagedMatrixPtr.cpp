@@ -66,7 +66,24 @@ double ManagedMatrixPtr::ColumnCount()
 
 ManagedMatrixPtr^ ManagedMatrixPtr::product(ManagedMatrixPtr^ lhs, ManagedMatrixPtr^ rhs)
 {
-	matrix<double> mulMatrix = prod(*(*(lhs->pointerToNativeMatrixPtr)), (*(*(rhs->pointerToNativeMatrixPtr))));
-	matrix<double>* heapMatrix = new matrix<double>(mulMatrix);
-	return gcnew ManagedMatrixPtr(heapMatrix);
+	try
+	{
+		if (lhs->ColumnCount() == rhs->RowCount()) {
+			matrix<double> mulMatrix = prod(*(*(lhs->pointerToNativeMatrixPtr)), (*(*(rhs->pointerToNativeMatrixPtr))));
+			matrix<double>* heapMatrix = new matrix<double>(mulMatrix);
+			return gcnew ManagedMatrixPtr(heapMatrix);
+		}
+		else {
+			throw gcnew System::Exception("Matrix dimensions don't match for matrix multiplication");
+		}
+	}
+	catch (std::exception& ex)
+	{
+		std::string exceptionMessage = ex.what();
+		throw gcnew System::Exception(gcnew System::String(ex.what()));
+	}
+	catch (std::string const& exMessage)
+	{
+		throw gcnew System::Exception(gcnew System::String(exMessage.c_str()));
+	}
 }
