@@ -27,11 +27,32 @@ ManagedMatrixPtr::~ManagedMatrixPtr()
 
 ManagedMatrixPtr::!ManagedMatrixPtr()
 {
+	IsDisposed = true;//Setting this property even though disposing has just started
 	if (nativeMatrixManager != NULL) {
 		char* matrixName = static_cast<char*>(Marshal::StringToHGlobalAnsi(MatrixName).ToPointer());
 		nativeMatrixManager->DeleteMatrix(matrixName);
 	}
 	if (pointerToNativeMatrixPtr) {
 		delete pointerToNativeMatrixPtr;
+	}
+}
+
+double ManagedMatrixPtr::RowCount()
+{
+	if (!IsDisposed) {
+		return (*pointerToNativeMatrixPtr)->size1();
+	}
+	else {
+		throw gcnew System::Exception("Tried to access disposed object");
+	}
+}
+
+double ManagedMatrixPtr::ColumnCount()
+{
+	if (!IsDisposed) {
+		return (*pointerToNativeMatrixPtr)->size2();
+	}
+	else {
+		throw gcnew System::Exception("Tried to access disposed object");
 	}
 }

@@ -10,10 +10,13 @@ public:
 	ManagedMatrixPtr(double rows, double columns);
 	~ManagedMatrixPtr();
 	!ManagedMatrixPtr();
+	double RowCount();
+	double ColumnCount();
 private:
 	MatrixPtr* pointerToNativeMatrixPtr;
 	NativeMatrixManager* nativeMatrixManager;
 public:
 	System::String^ MatrixName;
+	bool IsDisposed;
 };
 
