@@ -17,8 +17,24 @@ ManagedMatrixPtr::ManagedMatrixPtr(matrix<double>* matrix)
 
 ManagedMatrixPtr::ManagedMatrixPtr(double rows, double columns)
 {
+	System::GC::Collect();
+	System::GC::WaitForPendingFinalizers();
 	if (matrixCreationPossible(rows, columns, sizeof(double))) {
 		pointerToNativeMatrixPtr = new MatrixPtr( new matrix<double>(rows, columns));
+		nativeMatrixManager = NULL;
+		MatrixName = "Unnamed";
+	}
+	else {
+		throw gcnew System::Exception("Matrix creation not possible as there is not enough memory");
+	}
+}
+
+ManagedMatrixPtr::ManagedMatrixPtr(double rows, double columns, double initValue)
+{
+	System::GC::Collect();
+	System::GC::WaitForPendingFinalizers();
+	if (matrixCreationPossible(rows, columns, sizeof(double))) {
+		pointerToNativeMatrixPtr = new MatrixPtr(new matrix<double>(rows, columns, initValue));
 		nativeMatrixManager = NULL;
 		MatrixName = "Unnamed";
 	}
@@ -61,6 +77,26 @@ double ManagedMatrixPtr::ColumnCount()
 	}
 	else {
 		throw gcnew System::Exception("Tried to access disposed object");
+	}
+}
+
+double ManagedMatrixPtr::get(double rowIndex, double colIndex)
+{
+	if ((*pointerToNativeMatrixPtr) == NULL || ((*pointerToNativeMatrixPtr)->size1() <= rowIndex) || ((*pointerToNativeMatrixPtr)->size2() <= colIndex)) {
+		throw gcnew System::Exception("Index out of bounds");
+	}
+	else {
+		return (*pointerToNativeMatrixPtr)->at_element(rowIndex, colIndex);
+	}
+}
+
+void ManagedMatrixPtr::set(double rowIndex, double colIndex, double value)
+{
+	if ((*pointerToNativeMatrixPtr) == NULL || ((*pointerToNativeMatrixPtr)->size1() <= rowIndex) || ((*pointerToNativeMatrixPtr)->size2() <= colIndex)) {
+		throw gcnew System::Exception("Index out of bounds");
+	}
+	else {
+		(*pointerToNativeMatrixPtr)->at_element(rowIndex, colIndex) = value;
 	}
 }
 

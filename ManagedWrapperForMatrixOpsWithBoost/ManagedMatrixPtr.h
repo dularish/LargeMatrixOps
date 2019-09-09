@@ -9,10 +9,13 @@ public private:
 	ManagedMatrixPtr(matrix<double>* matrix);
 public:
 	ManagedMatrixPtr(double rows, double columns);
+	ManagedMatrixPtr(double rows, double columns, double initValue);
 	~ManagedMatrixPtr();
 	!ManagedMatrixPtr();
 	double RowCount();
 	double ColumnCount();
+	double get(double rowIndex, double colIndex);
+	void set(double rowIndex, double colIndex, double value);
 	static ManagedMatrixPtr^ product (ManagedMatrixPtr^ lhs, ManagedMatrixPtr^ rhs);
 private:
 	MatrixPtr* pointerToNativeMatrixPtr;

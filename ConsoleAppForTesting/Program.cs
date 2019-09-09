@@ -22,6 +22,9 @@ namespace ConsoleAppForTesting
 
                 //tryInstantiatingAMatrixLocally(managedMatrixManager);
 
+                tryInstantiatingAMatrixWithoutUsing();
+                ManagedMatrixPtr managedMatrix = new ManagedMatrixPtr(60000, 60000);
+
                 var return5 = managedMatrixManager.InstantiateMatrix("matrixA", 3, 3);
                 managedMatrixManager.SetDataForRow("matrixA", 0, new List<double>() { 1, 2, 3 });
                 var return52 = managedMatrixManager.GetDataForRow("matrixA", 0);
@@ -55,6 +58,11 @@ namespace ConsoleAppForTesting
             }
         }
 
+        private static void tryInstantiatingAMatrixWithoutUsing()
+        {
+            ManagedMatrixPtr managedMatrix = new ManagedMatrixPtr(60000, 60000);
+        }
+
         private static void tryInstantiatingAMatrixLocally(ManagedMatrixManager managedMatrixManager)
         {
             string matrixName = "someMatrix";
@@ -68,13 +76,20 @@ namespace ConsoleAppForTesting
 
             using(ManagedMatrixPtr managedMatrix = new ManagedMatrixPtr(60000, 60000))
             {
+                managedMatrix.set(30000, 30000, 5);
+                managedMatrix.set(30001, 30001, 10);
+                double value = managedMatrix.get(30000, 30000);
+                double value1 = managedMatrix.get(30001, 30001);
+                managedMatrix.set(30002, 30002, value + value1);
+                double value2 = managedMatrix.get(30002, 30002);
+
                 int a = 1;
             }
 
-            using (ManagedMatrixPtr managedMatrix = new ManagedMatrixPtr(90000, 90000))
-            {
-                int a = 1;
-            }
+            //using (ManagedMatrixPtr managedMatrix = new ManagedMatrixPtr(90000, 90000))
+            //{
+            //    int a = 1;
+            //}
         }
     }
 }
