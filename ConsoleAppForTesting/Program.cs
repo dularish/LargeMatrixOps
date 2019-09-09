@@ -1,5 +1,4 @@
-﻿using ManagedWrapperForMatrixOpsWithBoost;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,7 +12,6 @@ namespace ConsoleAppForTesting
         {
             try
             {
-                ManagedMatrixManager managedMatrixManager = new ManagedMatrixManager();
                 //bool return1 = managedMatrixManager.InstantiateMatrix("matrixA", 60000, 60000);
                 //bool return11 = managedMatrixManager.DeleteMatrix("matrixA");
                 //bool return2 = managedMatrixManager.InstantiateMatrix("matrixA", 60000, 60000);
@@ -22,29 +20,26 @@ namespace ConsoleAppForTesting
 
                 //tryInstantiatingAMatrixLocally(managedMatrixManager);
 
-                tryInstantiatingAMatrixWithoutUsing();
-                ManagedMatrixPtr managedMatrix = new ManagedMatrixPtr(60000, 60000);
+                //tryInstantiatingAMatrixWithoutUsing();
+                //ManagedMatrixPtr managedMatrix = new ManagedMatrixPtr(60000, 60000);
 
-                var return5 = managedMatrixManager.InstantiateMatrix("matrixA", 3, 3);
-                managedMatrixManager.SetDataForRow("matrixA", 0, new List<double>() { 1, 2, 3 });
-                var return52 = managedMatrixManager.GetDataForRow("matrixA", 0);
+                var matrixA = new ManagedMatrixPtr(3, 3);
+                matrixA.setDataForRow(0, new List<double>() { 1, 2, 3 });
+                var return52 = matrixA.getDataForRow(0);
 
-                string matrixB = "matrixB";
-                var return6 = managedMatrixManager.InstantiateMatrix(matrixB, 2, 3);
-                managedMatrixManager.SetDataForRow(matrixB, 0, new List<double>() { 8,1,2});
-                managedMatrixManager.SetDataForRow(matrixB, 1, new List<double>() { -5, 6, 7 });
+                var matrixB = new ManagedMatrixPtr(2, 3);
+                matrixB.setDataForRow(0, new List<double>() { 8,1,2});
+                matrixB.setDataForRow(1, new List<double>() { -5, 6, 7 });
 
-                string matrixE = "matrixE";
-                var return7 = managedMatrixManager.InstantiateMatrix(matrixE, 3, 2);
-                managedMatrixManager.SetDataForCol(matrixE, 0, new List<double>() { -5, 0, -11 });
-                managedMatrixManager.SetDataForCol(matrixE, 1, new List<double>() { 1, 2, 7 });
+                var matrixE = new ManagedMatrixPtr(3, 2);
+                matrixE.setDataForCol(0, new List<double>() { -5, 0, -11 });
+                matrixE.setDataForCol(1, new List<double>() { 1, 2, 7 });
                 //Correct answer : -62 24 \n -52 56
-                string matrixBE = "matrixBE";
-                var multipliedMatrix = ManagedMatrixPtr.product(new ManagedMatrixPtr(1000,10000), new ManagedMatrixPtr(1000, 1000));
-                managedMatrixManager.MatrixMultiply(matrixB, matrixE, matrixBE);
+                //var multipliedMatrix = ManagedMatrixPtr.product(new ManagedMatrixPtr(1000,10000), new ManagedMatrixPtr(1000, 1000));
+                var matrixBE = ManagedMatrixPtr.product(matrixB, matrixE);
                 for (int i = 0; i < 2; i++)
                 {
-                    List<double> rowData = managedMatrixManager.GetDataForRow(matrixBE, i);
+                    List<double> rowData = matrixBE.getDataForRow(i);
                     for (int j = 0; j < rowData.Count; j++)
                     {
                         Console.Write(rowData[j] + " ");
@@ -63,11 +58,11 @@ namespace ConsoleAppForTesting
             ManagedMatrixPtr managedMatrix = new ManagedMatrixPtr(60000, 60000);
         }
 
-        private static void tryInstantiatingAMatrixLocally(ManagedMatrixManager managedMatrixManager)
+        private static void tryInstantiatingAMatrixLocally()
         {
             string matrixName = "someMatrix";
-            ManagedMatrixPtr managedMatrixPtr = managedMatrixManager.InstantiateMatrix(matrixName, 20000, 20000);
-            ManagedMatrixPtr anotherManagedMatrixPtr = managedMatrixManager.InstantiateMatrix(matrixName + "a", 40000, 40000);
+            ManagedMatrixPtr managedMatrixPtr = new ManagedMatrixPtr(20000, 20000);
+            ManagedMatrixPtr anotherManagedMatrixPtr = new ManagedMatrixPtr(40000, 40000);
             using (managedMatrixPtr)
             using (anotherManagedMatrixPtr)
             {
