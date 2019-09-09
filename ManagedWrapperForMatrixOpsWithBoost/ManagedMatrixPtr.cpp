@@ -160,8 +160,7 @@ ManagedMatrixPtr^ ManagedMatrixPtr::product(ManagedMatrixPtr^ lhs, ManagedMatrix
 			matrix<double> rhsMatrix = (*(*(rhs->pointerToNativeMatrixPtr)));
 			matrix<double>* mulMatrix = new matrix<double>(lhs->RowCount(), rhs->ColumnCount(),0);
 			(*mulMatrix) = prod(lhsMatrix, rhsMatrix);
-			matrix<double>* heapMatrix = new matrix<double>(*mulMatrix);
-			return gcnew ManagedMatrixPtr(heapMatrix);
+			return gcnew ManagedMatrixPtr(mulMatrix);
 		}
 		else {
 			throw gcnew System::Exception("Matrix dimensions don't match for matrix multiplication");
