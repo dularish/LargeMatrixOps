@@ -27,6 +27,8 @@ public:
 	void setDataForRow(double rowIndex, List<double>^ rowData);
 	List<double>^ getDataForCol(double colIndex);
 	void setDataForCol(double colIndex, List<double>^ colData);
+	List<List<double>^>^ getData();
+	void setData(List<List<double>^>^ data);
 	static ManagedMatrixPtr^ product (ManagedMatrixPtr^ lhs, ManagedMatrixPtr^ rhs);
 private:
 	MatrixPtr* pointerToNativeMatrixPtr;

@@ -151,6 +151,55 @@ void ManagedMatrixPtr::setDataForCol(double colIndex, List<double>^ colData)
 	}
 }
 
+List<List<double>^>^ ManagedMatrixPtr::getData()
+{
+	if ((*pointerToNativeMatrixPtr) == NULL ) {
+		throw gcnew System::Exception("Matrix is null");
+	}
+	else {
+		List<List<double>^>^ matrixData = gcnew List<List<double>^>(RowCount());
+		for (size_t i = 0; i < (RowCount()); i++)
+		{
+			List<double>^ rowData = gcnew List<double>(ColumnCount());
+			for (size_t j = 0; j < (ColumnCount()); j++)
+			{
+				rowData->Add(get(i, j));
+			}
+			matrixData->Add(rowData);
+		}
+		return matrixData;
+	}
+}
+
+void ManagedMatrixPtr::setData(List<List<double>^>^ data)
+{
+	if (data->Count > 0) {
+		if (data->Count != RowCount()) {
+			throw gcnew System::Exception("Data count not equal to row count");
+		}
+		double colSizeOfFirstRow = data[0]->Count;
+
+		if (colSizeOfFirstRow != ColumnCount()) {
+			throw gcnew System::Exception("Data count not equal to column count");
+		}
+
+		for (size_t i = 1; i < data->Count; i++)
+		{
+			if (data[i]->Count != colSizeOfFirstRow) {
+				throw gcnew System::Exception("All column sizes are not equal. Therefore invalid data");
+			}
+		}
+
+		for (size_t i = 0; i < RowCount(); i++)
+		{
+			setDataForRow(i, data[i]);
+		}
+	}
+	else {
+		throw gcnew System::Exception("Data rows count cannot be less than zero");
+	}
+}
+
 ManagedMatrixPtr^ ManagedMatrixPtr::product(ManagedMatrixPtr^ lhs, ManagedMatrixPtr^ rhs)
 {
 	try
