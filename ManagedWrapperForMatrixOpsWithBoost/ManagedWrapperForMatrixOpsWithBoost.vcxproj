@@ -159,11 +159,6 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\MatrixOpsWithBoost\MatrixOpsWithBoost.vcxproj">
-      <Project>{26e46414-a881-4abf-803a-10578d4ccff9}</Project>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
