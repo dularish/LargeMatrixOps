@@ -1,15 +1,15 @@
 #include "pch.h"
 #include "ManagedMatrixPtr.h"
 
+
 ManagedMatrixPtr::ManagedMatrixPtr(matrix<double>* matrix)
 {
 	pointerToNativeMatrixPtr = new MatrixPtr(matrix);
 }
 
-ManagedMatrixPtr::ManagedMatrixPtr(double rows, double columns)
+ManagedMatrixPtr::ManagedMatrixPtr(double rows, double columns, GCSetting gcSetting)
 {
-	System::GC::Collect();
-	System::GC::WaitForPendingFinalizers();
+	garbageCollectBasedOnSetting(gcSetting, rows, columns, sizeof(double));
 	if (matrixCreationPossible(rows, columns, sizeof(double))) {
 		pointerToNativeMatrixPtr = new MatrixPtr( new matrix<double>(rows, columns));
 	}
@@ -18,10 +18,9 @@ ManagedMatrixPtr::ManagedMatrixPtr(double rows, double columns)
 	}
 }
 
-ManagedMatrixPtr::ManagedMatrixPtr(double rows, double columns, double initValue)
+ManagedMatrixPtr::ManagedMatrixPtr(double rows, double columns, double initValue, GCSetting gcSetting)
 {
-	System::GC::Collect();
-	System::GC::WaitForPendingFinalizers();
+	garbageCollectBasedOnSetting(gcSetting, rows, columns, sizeof(double));
 	if (matrixCreationPossible(rows, columns, sizeof(double))) {
 		pointerToNativeMatrixPtr = new MatrixPtr(new matrix<double>(rows, columns, initValue));
 	}
@@ -223,6 +222,27 @@ ManagedMatrixPtr^ ManagedMatrixPtr::product(ManagedMatrixPtr^ lhs, ManagedMatrix
 	catch (std::string const& exMessage)
 	{
 		throw gcnew System::Exception(gcnew System::String(exMessage.c_str()));
+	}
+}
+void ManagedMatrixPtr::garbageCollectBasedOnSetting(GCSetting gcSetting, double rows, double columns, double elemSize)
+{
+	switch (gcSetting)
+	{
+	case NoCollectionDuringInstantiation:
+		break;
+	case ForceCollectionDuringInstantiation:
+		System::GC::Collect();
+		System::GC::WaitForPendingFinalizers();
+		break;
+	case CollectOnlyIfNecessary:
+		if (!matrixCreationPossible(rows, columns, elemSize)) {
+			System::GC::Collect();
+			System::GC::WaitForPendingFinalizers();
+		}
+		break;
+	default:
+		throw gcnew System::Exception(gcnew System::String("Unimplemented garbage collection setting"));
+		break;
 	}
 }
 void printMatrix(boost::numeric::ublas::matrix<double>& mulMatrix)

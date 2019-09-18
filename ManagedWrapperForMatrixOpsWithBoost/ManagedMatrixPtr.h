@@ -10,13 +10,15 @@ using namespace boost::numeric::ublas;
 
 typedef std::shared_ptr < matrix<double>> MatrixPtr;
 
+enum GCSetting { NoCollectionDuringInstantiation, ForceCollectionDuringInstantiation, CollectOnlyIfNecessary};
+
 public ref class ManagedMatrixPtr
 {
 public private:
 	ManagedMatrixPtr(matrix<double>* matrix);
 public:
-	ManagedMatrixPtr(double rows, double columns);
-	ManagedMatrixPtr(double rows, double columns, double initValue);
+	ManagedMatrixPtr(double rows, double columns, GCSetting gcSetting);
+	ManagedMatrixPtr(double rows, double columns, double initValue, GCSetting gcSetting);
 	~ManagedMatrixPtr();
 	!ManagedMatrixPtr();
 	double RowCount();
@@ -30,6 +32,7 @@ public:
 	List<List<double>^>^ getData();
 	void setData(List<List<double>^>^ data);
 	static ManagedMatrixPtr^ product (ManagedMatrixPtr^ lhs, ManagedMatrixPtr^ rhs);
+	static void garbageCollectBasedOnSetting(GCSetting gcSetting,double rows,double columns, double elemSize);
 private:
 	MatrixPtr* pointerToNativeMatrixPtr;
 public:
