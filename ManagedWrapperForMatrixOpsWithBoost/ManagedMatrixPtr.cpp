@@ -228,13 +228,13 @@ void ManagedMatrixPtr::garbageCollectBasedOnSetting(GCSetting gcSetting, double 
 {
 	switch (gcSetting)
 	{
-	case NoCollectionDuringInstantiation:
+	case GCSetting::NoCollectionDuringInstantiation:
 		break;
-	case ForceCollectionDuringInstantiation:
+	case GCSetting::ForceCollectionDuringInstantiation:
 		System::GC::Collect();
 		System::GC::WaitForPendingFinalizers();
 		break;
-	case CollectOnlyIfNecessary:
+	case GCSetting::CollectOnlyIfNecessary:
 		if (!matrixCreationPossible(rows, columns, elemSize)) {
 			System::GC::Collect();
 			System::GC::WaitForPendingFinalizers();

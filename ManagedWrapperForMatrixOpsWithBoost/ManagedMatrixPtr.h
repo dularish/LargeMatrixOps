@@ -10,7 +10,11 @@ using namespace boost::numeric::ublas;
 
 typedef std::shared_ptr < matrix<double>> MatrixPtr;
 
-enum GCSetting { NoCollectionDuringInstantiation, ForceCollectionDuringInstantiation, CollectOnlyIfNecessary};
+public enum class GCSetting: int 
+{ 
+	NoCollectionDuringInstantiation = 0, 
+	ForceCollectionDuringInstantiation = 1, 
+	CollectOnlyIfNecessary = 2};
 
 public ref class ManagedMatrixPtr
 {

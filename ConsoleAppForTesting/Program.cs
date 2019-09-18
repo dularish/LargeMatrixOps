@@ -23,15 +23,15 @@ namespace ConsoleAppForTesting
                 //tryInstantiatingAMatrixWithoutUsing();
                 //ManagedMatrixPtr managedMatrix = new ManagedMatrixPtr(60000, 60000);
 
-                var matrixA = new ManagedMatrixPtr(3, 3);
+                var matrixA = new ManagedMatrixPtr(3, 3, GCSetting.CollectOnlyIfNecessary);
                 matrixA.setDataForRow(0, new List<double>() { 1, 2, 3 });
                 var return52 = matrixA.getDataForRow(0);
 
-                var matrixB = new ManagedMatrixPtr(2, 3);
+                var matrixB = new ManagedMatrixPtr(2, 3, GCSetting.CollectOnlyIfNecessary);
                 matrixB.setDataForRow(0, new List<double>() { 8,1,2});
                 matrixB.setDataForRow(1, new List<double>() { -5, 6, 7 });
 
-                var matrixE = new ManagedMatrixPtr(3, 2);
+                var matrixE = new ManagedMatrixPtr(3, 2, GCSetting.CollectOnlyIfNecessary);
                 matrixE.setDataForCol(0, new List<double>() { -5, 0, -11 });
                 matrixE.setDataForCol(1, new List<double>() { 1, 2, 7 });
                 //Correct answer : -62 24 \n -52 56
@@ -55,21 +55,21 @@ namespace ConsoleAppForTesting
 
         private static void tryInstantiatingAMatrixWithoutUsing()
         {
-            ManagedMatrixPtr managedMatrix = new ManagedMatrixPtr(60000, 60000);
+            ManagedMatrixPtr managedMatrix = new ManagedMatrixPtr(40000, 40000, GCSetting.CollectOnlyIfNecessary);
         }
 
         private static void tryInstantiatingAMatrixLocally()
         {
             string matrixName = "someMatrix";
-            ManagedMatrixPtr managedMatrixPtr = new ManagedMatrixPtr(20000, 20000);
-            ManagedMatrixPtr anotherManagedMatrixPtr = new ManagedMatrixPtr(40000, 40000);
+            ManagedMatrixPtr managedMatrixPtr = new ManagedMatrixPtr(20000, 20000, GCSetting.CollectOnlyIfNecessary);
+            ManagedMatrixPtr anotherManagedMatrixPtr = new ManagedMatrixPtr(40000, 40000, GCSetting.CollectOnlyIfNecessary);
             using (managedMatrixPtr)
             using (anotherManagedMatrixPtr)
             {
                 string a = "";
             }
 
-            using(ManagedMatrixPtr managedMatrix = new ManagedMatrixPtr(60000, 60000))
+            using(ManagedMatrixPtr managedMatrix = new ManagedMatrixPtr(60000, 60000, GCSetting.CollectOnlyIfNecessary))
             {
                 managedMatrix.set(30000, 30000, 5);
                 managedMatrix.set(30001, 30001, 10);
